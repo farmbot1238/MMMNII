@@ -96,11 +96,10 @@ window.ExamApp = {
     startUnit(unitKey) {
         this.currentUnit = unitKey;
         const unitNames = {
-            political: 'الحياة السياسية',
-            economic: 'الحياة الاقتصادية',
-            social: 'الحياة الاجتماعية',
-            education: 'التعليم والثقافة',
-            palestine: 'الأردن والقضية الفلسطينية'
+            political: 'الأردن في العصور القديمة',
+            economic: 'الأردن في العصور الإسلامية',
+            social: ' الأردن في العصر الحديث',
+
         };
         this.elements.unitTitle.textContent = unitNames[unitKey];
         this.currentQuestions = [...this.allQuestions[unitKey]];

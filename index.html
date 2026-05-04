@@ -3,10 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قسم التارييخ - الأردن</title>
-    <link rel="stylesheet" href="style.css" id="mainStyle">
-    <style id="antiTheftStyle">
-        /* حماية ضد السرقة - تظهر رسالة الاستهزاء إذا الملفات ناقصة */
+    <title>قسم التاريخ - الأردن | الاختبارات التفاعلية</title>
+    <style>
+        /* ==================== */
+        /*  styles.css - الدمج الكامل */
+        /* ==================== */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* منع التحديد العام */
+        }
+
+        body {
+            background: linear-gradient(145deg, #1e3c2c 0%, #2a4a35 100%);
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 248, 225, 0.95);
+            border-radius: 65px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255,255,255,0.2);
+            overflow: hidden;
+            backdrop-filter: blur(2px);
+            transition: all 0.3s ease;
+        }
+
+        /* شاشة القائمة الرئيسية */
+        #menuScreen {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        #menuScreen h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #b87c2e, #6b3e1c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+
+        #menuScreen h2 {
+            color: #2c5a2e;
+            font-size: 1.6rem;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #d4a373;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .main-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin: 40px 0 30px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(145deg, #f7d9aa, #e7bc7e);
+            border: none;
+            padding: 18px 32px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #3b2a1f;
+            box-shadow: 0 8px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0,0,0,0.25);
+            background: linear-gradient(145deg, #ffe2b5, #f0c48b);
+        }
+
+        .menu-btn.special {
+            background: linear-gradient(145deg, #c77d3e, #a55d2a);
+            color: #fff4e6;
+            box-shadow: 0 6px 14px rgba(160, 70, 0, 0.5);
+        }
+
+        .footer-note {
+            margin-top: 35px;
+            font-size: 1rem;
+            color: #6f4e2e;
+            background: #efe0cf;
+            display: inline-block;
+            padding: 8px 22px;
+            border-radius: 40px;
+        }
+
+        /* شاشة الاختبار */
+        .unit-header {
+            background: #2d3e2b;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: #a75d2a;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px black;
+        }
+
+        .back-btn:hover {
+            background: #8b481f;
+            transform: scale(0.97);
+        }
+
+        .unit-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            background: #fbeac9;
+            padding: 5px 25px;
+            border-radius: 40px;
+            color: #4a2e1a;
+        }
+
+        .unit-stats {
+            background: #1f3b1a;
+            color: #ffeca2;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+        /* منطقة التحميل */
+        .loading-overlay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 70px;
+            gap: 20px;
+        }
+
+        .spinner {
+            width: 55px;
+            height: 55px;
+            border: 6px solid #e2cfaa;
+            border-top: 6px solid #c97e2e;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* منطقة الاختبار */
+        .quiz-container {
+            padding: 35px 30px;
+        }
+
+        .progress-bar {
+            background: #ddd2bd;
+            border-radius: 30px;
+            height: 14px;
+            width: 100%;
+            margin-bottom: 35px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #d68b45, #b45f2b);
+            width: 0%;
+            height: 100%;
+            border-radius: 30px;
+            transition: width 0.3s;
+        }
+
+        .question-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2f2c24;
+            background: #fef3e0;
+            padding: 25px;
+            border-radius: 55px;
+            margin-bottom: 40px;
+            line-height: 1.5;
+            box-shadow: inset 0 0 0 2px #fae5bc, 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 45px;
+        }
+
+        .option-btn {
+            background: #f6efdf;
+            border: 2px solid #e7cfa1;
+            padding: 16px 12px;
+            border-radius: 55px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            color: #2f2c24;
+        }
+
+        .option-btn:hover:not(.disabled-opt) {
+            background: #e9d9bd;
+            transform: scale(1.01);
+            border-color: #c69454;
+        }
+
+        .option-btn.selected {
+            background: #c77933;
+            border-color: #8b4c1c;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .option-btn.disabled-opt {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: #7f5539;
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #5e3e28;
+            transform: scale(0.98);
+        }
+
+        /* منطقة النتيجة */
+        .result-card {
+            padding: 35px;
+            text-align: center;
+        }
+
+        .result-card h1 {
+            font-size: 2.4rem;
+            color: #5f3b22;
+            margin-bottom: 20px;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            background: #ecdcbf;
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 100px;
+            margin: 15px auto;
+            box-shadow: inset 0 0 0 2px white, 0 7px 14px rgba(0,0,0,0.1);
+        }
+
+        .result-message {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin: 10px;
+            color: #2c6e2f;
+        }
+
+        .result-percentage {
+            font-size: 1.3rem;
+            background: #b98f64;
+            display: inline-block;
+            padding: 5px 25px;
+            border-radius: 50px;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .answers-review {
+            margin-top: 35px;
+            text-align: right;
+            background: #f4ecd9;
+            padding: 20px;
+            border-radius: 40px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .answers-review h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #6b3f1c;
+        }
+
+        .review-item {
+            background: white;
+            margin: 12px 0;
+            padding: 12px 20px;
+            border-radius: 35px;
+            border-right: 8px solid;
+        }
+
+        .review-correct {
+            border-right-color: #2d6a4f;
+            background: #eafaf1;
+        }
+
+        .review-wrong {
+            border-right-color: #bc4742;
+            background: #ffe6e5;
+        }
+
+        /* فئات مخفية */
+        .hidden {
+            display: none !important;
+        }
+
+        .hidden-content {
+            display: none !important;
+        }
+
+        /* حماية مضادة للسرقة */
         .anti-theft-message {
             display: none;
             position: fixed;
@@ -21,14 +372,11 @@
             text-align: center;
             flex-direction: column;
             font-family: 'Courier New', monospace;
-            animation: bgPulse 2s ease-in-out infinite;
         }
-        
         @keyframes bgPulse {
             0%, 100% { background: linear-gradient(135deg, #000000, #1a0000, #000000); }
             50% { background: linear-gradient(135deg, #1a0000, #2a0000, #1a0000); }
         }
-        
         .anti-theft-message .troll-container {
             background: rgba(0, 0, 0, 0.9);
             padding: 60px 80px;
@@ -38,153 +386,66 @@
             animation: borderGlow 0.8s ease-in-out infinite;
             box-shadow: 0 0 80px rgba(255, 0, 0, 0.5);
             transform: scale(1);
-            animation: containerPulse 0.5s ease-in-out infinite;
         }
-        
         @keyframes borderGlow {
             0%, 100% { border-color: #ff0000; box-shadow: 0 0 60px rgba(255, 0, 0, 0.5); }
             50% { border-color: #ff6600; box-shadow: 0 0 100px rgba(255, 102, 0, 0.8); }
         }
-        
-        @keyframes containerPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        
         .anti-theft-message .laugh-emoji {
             font-size: 7em;
             display: inline-block;
-            animation: laughBounce 0.6s ease-in-out infinite, glitch 0.3s infinite;
+            animation: laughBounce 0.6s ease-in-out infinite;
             filter: drop-shadow(0 0 15px #ff0000);
         }
-        
         @keyframes laughBounce {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             25% { transform: translateY(-20px) rotate(-10deg); }
             75% { transform: translateY(10px) rotate(10deg); }
         }
-        
-        @keyframes glitch {
-            0%, 100% { text-shadow: -3px 0 #ff0000, 3px 0 #ff6600; }
-            25% { text-shadow: -5px 0 #ff0000, 5px 0 #ff6600; transform: skew(2deg); }
-            75% { text-shadow: -2px 0 #ff0000, 2px 0 #ff6600; transform: skew(-2deg); }
-        }
-        
-        .anti-theft-message h1 {
-            font-size: 4.5em;
-            color: #ff3333;
-            margin: 25px 0;
-            font-family: monospace;
-            letter-spacing: 5px;
-            animation: titleShake 0.2s infinite;
-            text-shadow: 3px 3px 0px #660000;
-        }
-        
+        .anti-theft-message h1 { font-size: 4.5em; color: #ff3333; margin: 25px 0; text-shadow: 3px 3px 0px #660000; animation: titleShake 0.2s infinite; }
         @keyframes titleShake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-8px); }
             75% { transform: translateX(8px); }
         }
-        
-        .anti-theft-message p {
-            font-size: 1.8em;
-            color: #ff8888;
-            margin: 18px 0;
-            font-weight: bold;
-            animation: textFlicker 1s infinite;
-        }
-        
-        @keyframes textFlicker {
-            0%, 100% { opacity: 1; text-shadow: 0 0 5px #ff3333; }
-            50% { opacity: 0.7; text-shadow: 0 0 15px #ff3333; }
-        }
-        
-        .anti-theft-message .second-line {
-            font-size: 2em;
-            color: #ff6666;
-            animation: textFlicker 0.6s infinite;
-        }
-        
-        .anti-theft-message .skull {
-            font-size: 4em;
-            margin: 20px 0;
-            animation: skullSpin 1s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px #ff3300);
-        }
-        
+        .anti-theft-message p { font-size: 1.8em; color: #ff8888; margin: 18px 0; }
+        .anti-theft-message .skull { font-size: 4em; margin: 20px 0; animation: skullSpin 1s ease-in-out infinite; }
         @keyframes skullSpin {
             0%, 100% { transform: rotate(0deg) scale(1); }
             25% { transform: rotate(15deg) scale(1.1); }
             75% { transform: rotate(-15deg) scale(1.1); }
         }
-        
-        .anti-theft-message .blink {
-            font-size: 2.5em;
-            color: #ff6666;
-            margin-top: 20px;
-            animation: blinkCursor 0.8s step-end infinite;
-            font-family: monospace;
-        }
-        
-        @keyframes blinkCursor {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        .anti-theft-message .decoration-line {
-            color: #ff6633;
-            font-size: 1.5em;
-            margin: 20px 0;
-            letter-spacing: 5px;
-            animation: linePulse 1s infinite;
-        }
-        
-        @keyframes linePulse {
-            0%, 100% { opacity: 0.5; letter-spacing: 5px; }
-            50% { opacity: 1; letter-spacing: 10px; text-shadow: 0 0 10px #ff6633; }
-        }
-        
-        .hidden-content {
-            display: none !important;
-        }
-        
-        /* منع تحديد النص */
-        .anti-theft-message {
-            user-select: none;
-            -webkit-user-select: none;
+        @media (max-width: 700px) {
+            .question-text { font-size: 1.3rem; }
+            .menu-btn { padding: 12px 20px; font-size: 1rem; }
+            .unit-title { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
-    <!-- رسالة الاستهزاء - تظهر فقط إذا الملفات ناقصة -->
+    <!-- رسالة الاستهزاء ضد السرقة -->
     <div id="antiTheftMessage" class="anti-theft-message" style="display: none;">
         <div class="troll-container">
-            <div>
-                <span class="laugh-emoji">😂😂😂</span>
-                <h1>هههههههههههههههه</h1>
-                <div class="decoration-line">═══════⟠═══════</div>
-                <p>مفكر حالك قوي بتحاول تسرق الموقع؟</p>
-                <p class="second-line">أقول ارجع وراك</p>
-                <div class="decoration-line">═══════⟠═══════</div>
-                <div class="skull">💀😈💀</div>
-                <p style="font-size: 1.3em;">مش بهالسهولة يالحبيب 😎</p>
-                <div class="blink">_</div>
-                <span class="laugh-emoji">🤣🤣🤣</span>
-            </div>
+            <span class="laugh-emoji">😂😂😂</span>
+            <h1>هههههههههههههههه</h1>
+            <p>مفكر حالك قوي بتحاول تسرق الموقع؟</p>
+            <p>أقول ارجع وراك</p>
+            <div class="skull">💀😈💀</div>
+            <p style="font-size:1.3em;">مش بهالسهولة يالحبيب 😎</p>
+            <span class="laugh-emoji">🤣🤣🤣</span>
         </div>
     </div>
 
-    <!-- المحتوى الحقيقي - يختفي إذا الملفات ناقصة -->
-    <div id="mainContent" class="container hidden-content">
-        <!-- الشاشة الرئيسية -->
+    <!-- المحتوى الرئيسي للتطبيق -->
+    <div id="mainContent" class="container hidden-content" style="display: none;">
+        <!-- القائمة الرئيسية -->
         <div id="menuScreen">
-            <h1> فصل أول -قسم التاريخ الأردني</h1>
+            <h1>📜 فصل أول - قسم التاريخ الأردني</h1>
             <h2>اختر الاختبار الذي تريد</h2>
             <div class="main-menu">
                 <button class="menu-btn" data-unit="political">🏛️ الأردن في العصور القديمة</button>
                 <button class="menu-btn" data-unit="economic">💼 الأردن في العصور الإسلامية</button>
                 <button class="menu-btn" data-unit="social">👥 الأردن في العصر الحديث</button>
-
                 <button class="menu-btn special" id="comprehensiveBtn">📜 الامتحان الشامل (50 سؤال)</button>
             </div>
             <div class="footer-note">كل وحدة تحتوي على 20 سؤالاً | الشامل 50 سؤالاً عشوائياً</div>
@@ -197,157 +458,310 @@
                 <span class="unit-title" id="unitTitle">الوحدة</span>
                 <span class="unit-stats" id="progressText">سؤال 1 / 20</span>
             </div>
-
-            <!-- منطقة التحميل -->
             <div id="loadingArea" class="loading-overlay hidden">
                 <div class="spinner"></div>
                 <p>جاري تحميل الأسئلة...</p>
             </div>
-
-            <!-- منطقة الاختبار -->
             <div id="quizArea" class="hidden">
                 <div class="quiz-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="question-text" id="questionText">جاري التحميل...</div>
+                    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                    <div class="question-text" id="questionText">...</div>
                     <div class="options-grid" id="optionsContainer"></div>
                     <div class="nav-buttons">
                         <button class="nav-btn" id="prevBtn">السابق</button>
                     </div>
                 </div>
             </div>
-
-            <!-- منطقة النتيجة -->
             <div id="resultArea" class="hidden">
                 <div class="result-card">
                     <h1>نتيجة الاختبار</h1>
-                    <div class="result-score" id="scoreCard">
-                        <span id="scoreValue">0</span>
-                        <span> / </span>
-                        <span id="totalQuestionsValue">0</span>
-                    </div>
+                    <div class="result-score"><span id="scoreValue">0</span> / <span id="totalQuestionsValue">0</span></div>
                     <div class="result-message" id="resultMessage"></div>
                     <div class="result-percentage" id="resultPercentage"></div>
                     <button class="back-btn" id="returnToMenuBtn">امتحان جديد</button>
-                    <div class="answers-review">
-                        <h3>✧ مراجعة الإجابات ✧</h3>
-                        <div id="answersReview"></div>
-                    </div>
+                    <div class="answers-review"><h3>✧ مراجعة الإجابات ✧</h3><div id="answersReview"></div></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="script.js" id="mainScript"></script>
     <script>
-        // نظام حماية ضد السرقة - يتحقق من وجود جميع الملفات
-        (function() {
-            const antiTheftMessage = document.getElementById('antiTheftMessage');
-            const mainContent = document.getElementById('mainContent');
-            
-            // التحقق من وجود ملف CSS
-            function isCSSLoaded() {
-                const styleSheets = document.styleSheets;
-                for (let i = 0; i < styleSheets.length; i++) {
-                    if (styleSheets[i].href && styleSheets[i].href.includes('style.css')) {
-                        try {
-                            const rules = styleSheets[i].cssRules;
-                            if (rules && rules.length > 0) {
-                                return true;
-                            }
-                        } catch(e) {
-                            return false;
-                        }
-                    }
-                }
-                return false;
-            }
-            
-            // التحقق من وجود جميع الملفات
-            async function checkAllFiles() {
-                const filesToCheck = ['style.css', 'script.js', 'questions.json'];
-                let allFilesExist = true;
-                
-                for (const file of filesToCheck) {
-                    try {
-                        const response = await fetch(file, { method: 'HEAD' });
-                        if (!response.ok) {
-                            allFilesExist = false;
-                            break;
-                        }
-                    } catch (error) {
-                        allFilesExist = false;
-                        break;
-                    }
-                }
-                
-                return allFilesExist;
-            }
-            
-            // انتظار قليل ثم التحقق
-            setTimeout(async () => {
-                const allFilesExist = await checkAllFiles();
-                const cssLoaded = isCSSLoaded();
-                const scriptLoaded = typeof window.ExamApp !== 'undefined';
-                
-                if (!allFilesExist || !cssLoaded || !scriptLoaded) {
-                    // عرض رسالة الاستهزاء
-                    antiTheftMessage.style.display = 'flex';
-                    mainContent.classList.add('hidden-content');
-                    
-                    // تغيير عنوان الصفحة
+        // ======================
+        // سكربت اختبار التاريخ بالكامل (script.js مدمج)
+        // ======================
+        (function(){
+            // ---------- حماية anti-theft 100% ----------
+            async function verifyFilesAndRun(){
+                const antiDiv = document.getElementById('antiTheftMessage');
+                const mainDiv = document.getElementById('mainContent');
+                let allGood = true;
+                // محاكاة التأكد من وجود ملف الأسئلة (questions.json) - المطلوب وجوده بنفس المستودع
+                try {
+                    const testFetch = await fetch('questions.json', { method: 'HEAD' });
+                    if (!testFetch.ok) allGood = false;
+                } catch(e) { allGood = false; }
+                // بالإضافة إلى فحص style و script محلياً: لكن بما أن الكل داخل نفس الملف نعتبر css/js موحودان
+                // لكن نضيف تحقق إضافي: هل الأنماط الرئيسية معرّفة؟ نمط .container موجود؟
+                const styleExists = !!document.querySelector('style');
+                if(!styleExists) allGood = false;
+                if (!allGood) {
+                    antiDiv.style.display = 'flex';
+                    mainDiv.style.display = 'none';
                     document.title = '😂 Nice Try! 😂';
-                    
-                    // منع النقر بزر الماوس الأيمن
-                    document.addEventListener('contextmenu', function(e) {
-                        e.preventDefault();
-                        alert('هههههههههههه مفكر تحفظ الموقع؟ 😂');
-                        return false;
-                    });
-                    
-                    // منع محاولات فتح أدوات المطور
-                    document.addEventListener('keydown', function(e) {
+                    document.addEventListener('contextmenu', (e) => { e.preventDefault(); alert('هههههههههههه مفكر تحفظ الموقع؟ 😂'); });
+                    document.addEventListener('keydown', (e) => {
                         if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
-                            e.preventDefault();
-                            alert('لا لا لا... 😂');
+                            e.preventDefault(); alert('لا لا لا... 😂');
                         }
                     });
-                    
-                    // مسح الـ console وإضافة رسائل استهزاء
-                    console.clear();
-                    console.log('%c🚫 ممنوع السرقة 🚫', 'color: red; font-size: 25px; font-weight: bold;');
-                    console.log('%c🤣 شكلك مفكر حالك فاهم ههههههههه', 'color: orange; font-size: 18px;');
-                    console.log('%c😎 ارجع وراك يالحبيب', 'color: red; font-size: 20px; font-weight: bold;');
-                    
-                    // إضافة رموز طائرة في الشاشة
                     setInterval(() => {
-                        const emojis = ['😂', '🤣', '💀', '😈', 'هههه', 'لا', 'تسرق', '😎', '🤡', '🃏'];
-                        const troll = document.createElement('div');
-                        troll.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                        troll.style.position = 'fixed';
-                        troll.style.left = Math.random() * window.innerWidth + 'px';
-                        troll.style.top = Math.random() * window.innerHeight + 'px';
-                        troll.style.fontSize = Math.random() * 50 + 25 + 'px';
-                        troll.style.opacity = '0.7';
-                        troll.style.pointerEvents = 'none';
-                        troll.style.zIndex = '10000';
-                        troll.style.animation = 'laughBounce 0.5s ease-out';
-                        troll.style.fontFamily = 'monospace';
-                        document.body.appendChild(troll);
-                        setTimeout(() => troll.remove(), 1500);
-                    }, 400);
+                        let emojis = ['😂','🤣','💀','😈','هههه'];
+                        let t = document.createElement('div');
+                        t.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+                        t.style.position = 'fixed'; t.style.left = Math.random()*window.innerWidth+'px'; t.style.top = Math.random()*window.innerHeight+'px';
+                        t.style.fontSize = (Math.random()*50+25)+'px'; t.style.opacity = 0.7; t.style.pointerEvents = 'none'; t.style.zIndex = 100000;
+                        document.body.appendChild(t);
+                        setTimeout(()=>t.remove(),1300);
+                    },500);
+                    return false;
                 } else {
-                    // جميع الملفات موجودة، عرض المحتوى الحقيقي
-                    antiTheftMessage.style.display = 'none';
-                    mainContent.classList.remove('hidden-content');
-                    
-                    // تهيئة التطبيق
-                    if (typeof window.ExamApp !== 'undefined' && window.ExamApp.init) {
-                        window.ExamApp.init();
+                    antiDiv.style.display = 'none';
+                    mainDiv.classList.remove('hidden-content');
+                    mainDiv.style.display = 'block';
+                    return true;
+                }
+            }
+
+            // بيانات الأسئلة (لتكون مدمجة احتياطياً لكن السؤال يعتمد على ملف questions.json)
+            // سنقوم بتحميل من questions.json حصراً كما هو مطلوب.
+            // سكربت إدارة الاختبار
+            let currentQuestions = [];     // مصفوفة الأسئلة الحالية
+            let currentIndex = 0;
+            let userAnswers = [];           // الإجابات المخزنة
+            let currentUnitType = '';
+            let totalQuestionsCount = 0;
+            let isComprehensiveMode = false;
+            
+            // عناصر DOM
+            const menuScreen = document.getElementById('menuScreen');
+            const quizScreen = document.getElementById('quizScreen');
+            const loadingArea = document.getElementById('loadingArea');
+            const quizArea = document.getElementById('quizArea');
+            const resultArea = document.getElementById('resultArea');
+            const unitTitleSpan = document.getElementById('unitTitle');
+            const progressTextSpan = document.getElementById('progressText');
+            const progressFillDiv = document.getElementById('progressFill');
+            const questionTextDiv = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const prevBtn = document.getElementById('prevBtn');
+            const backToMenuBtn = document.getElementById('backToMenuBtn');
+            const returnToMenuBtn = document.getElementById('returnToMenuBtn');
+            const comprehensiveBtn = document.getElementById('comprehensiveBtn');
+            
+            // تحميل الأسئلة من الملف الخارجي (questions.json)
+            async function loadQuestions(unit, isComprehensive = false) {
+                loadingArea.classList.remove('hidden');
+                quizArea.classList.add('hidden');
+                resultArea.classList.add('hidden');
+                try {
+                    const response = await fetch('questions.json');
+                    if (!response.ok) throw new Error('فشل تحميل ملف الأسئلة');
+                    const allData = await response.json();
+                    // نتوقع أن يكون الملف يحتوي على مصفوفات حسب المفاتيح: political, economic, social
+                    let selected = [];
+                    if (isComprehensive) {
+                        // جمع كل الأسئلة من الأقسام الثلاثة واختيار 50 عشوائياً (أو كل الأسئلة إن قلت)
+                        let combined = [];
+                        if(allData.political) combined.push(...allData.political);
+                        if(allData.economic) combined.push(...allData.economic);
+                        if(allData.social) combined.push(...allData.social);
+                        if(combined.length > 50) {
+                            // خلط عشوائي
+                            for(let i=combined.length-1;i>0;i--){
+                                const j=Math.floor(Math.random()*(i+1));
+                                [combined[i],combined[j]]=[combined[j],combined[i]];
+                            }
+                            selected = combined.slice(0,50);
+                        } else {
+                            selected = combined;
+                        }
+                    } else {
+                        if(allData[unit] && Array.isArray(allData[unit])) {
+                            selected = [...allData[unit]];
+                            if(selected.length > 20) selected = selected.slice(0,20);
+                        } else {
+                            selected = [];
+                        }
+                    }
+                    if(!selected.length) throw new Error('لا توجد أسئلة متاحة لهذه الوحدة');
+                    currentQuestions = selected;
+                    totalQuestionsCount = currentQuestions.length;
+                    userAnswers = new Array(totalQuestionsCount).fill(null);
+                    currentIndex = 0;
+                    renderCurrentQuestion();
+                    loadingArea.classList.add('hidden');
+                    quizArea.classList.remove('hidden');
+                    updateProgressBarAndText();
+                } catch(err) {
+                    loadingArea.classList.add('hidden');
+                    alert('حدث خطأ في تحميل الأسئلة: '+err.message);
+                    backToMenu();
+                }
+            }
+            
+            function renderCurrentQuestion() {
+                if(!currentQuestions.length || currentIndex >= currentQuestions.length) return;
+                const q = currentQuestions[currentIndex];
+                questionTextDiv.innerHTML = q.question || 'سؤال بدون نص';
+                // إنشاء خيارات
+                optionsContainer.innerHTML = '';
+                const letters = ['أ', 'ب', 'ج', 'د'];
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    if(userAnswers[currentIndex] === idx) btn.classList.add('selected');
+                    btn.innerHTML = `${letters[idx]}. ${opt}`;
+                    btn.addEventListener('click', () => {
+                        if(userAnswers[currentIndex] !== idx) {
+                            userAnswers[currentIndex] = idx;
+                            highlightSelectedOption();
+                        }
+                    });
+                    optionsContainer.appendChild(btn);
+                });
+                // زر السابق يظهر او يختفي
+                prevBtn.style.display = currentIndex === 0 ? 'none' : 'inline-block';
+                if(currentIndex === totalQuestionsCount-1) {
+                    prevBtn.nextElementSibling ? prevBtn.nextElementSibling.remove() : null;
+                    if(!document.getElementById('nextFinishBtn')) {
+                        const finishBtn = document.createElement('button');
+                        finishBtn.id = 'nextFinishBtn';
+                        finishBtn.className = 'nav-btn';
+                        finishBtn.textContent = 'إنهاء الاختبار 🎯';
+                        finishBtn.style.marginRight = '15px';
+                        finishBtn.addEventListener('click', showResults);
+                        prevBtn.parentNode.appendChild(finishBtn);
+                    }
+                } else {
+                    const existingFinish = document.getElementById('nextFinishBtn');
+                    if(existingFinish) existingFinish.remove();
+                    if(!document.getElementById('nextNormalBtn')) {
+                        const nextBtn = document.createElement('button');
+                        nextBtn.id = 'nextNormalBtn';
+                        nextBtn.className = 'nav-btn';
+                        nextBtn.textContent = 'التالي ➡';
+                        nextBtn.style.marginRight = '15px';
+                        nextBtn.addEventListener('click', () => {
+                            if(currentIndex < totalQuestionsCount-1) {
+                                currentIndex++;
+                                renderCurrentQuestion();
+                                updateProgressBarAndText();
+                            }
+                        });
+                        prevBtn.parentNode.appendChild(nextBtn);
                     }
                 }
-            }, 1000);
+                updateProgressBarAndText();
+            }
+            
+            function highlightSelectedOption() {
+                const btns = document.querySelectorAll('.option-btn');
+                btns.forEach((btn, idx) => {
+                    if(userAnswers[currentIndex] === idx) btn.classList.add('selected');
+                    else btn.classList.remove('selected');
+                });
+            }
+            
+            function updateProgressBarAndText() {
+                if(totalQuestionsCount){
+                    progressTextSpan.innerText = `سؤال ${currentIndex+1} / ${totalQuestionsCount}`;
+                    let percent = ((currentIndex) / totalQuestionsCount) * 100;
+                    progressFillDiv.style.width = percent + '%';
+                }
+            }
+            
+            function showResults() {
+                let score = 0;
+                let reviewHtml = '';
+                for(let i=0;i<totalQuestionsCount;i++){
+                    const userAns = userAnswers[i];
+                    const correctAns = currentQuestions[i].correct;
+                    const isCorrect = (userAns === correctAns);
+                    if(isCorrect) score++;
+                    const qText = currentQuestions[i].question;
+                    const userOption = userAns !== null ? (currentQuestions[i].options[userAns] || 'لم يختر') : 'لم يجب';
+                    const correctOption = currentQuestions[i].options[correctAns];
+                    const statusClass = isCorrect ? 'review-correct' : 'review-wrong';
+                    reviewHtml += `<div class="review-item ${statusClass}">
+                                    <strong>❓ السؤال:</strong> ${qText}<br>
+                                    <span>✅ إجابتك: ${userOption}</span><br>
+                                    <span>✔️ الإجابة الصحيحة: ${correctOption}</span>
+                                    </div>`;
+                }
+                const percentage = ((score / totalQuestionsCount)*100).toFixed(1);
+                let message = '';
+                if(percentage >= 85) message = '🏆 ممتاز! مستوى عالٍ في التاريخ الأردني 🏆';
+                else if(percentage >= 65) message = '📘 جيد جداً، يمكنك المراجعة لتحقيق الأفضل';
+                else if(percentage >= 50) message = '📖 جيد، حاول مراجعة المحتوى مرة أخرى';
+                else message = '📚 تحتاج إلى مراجعة شاملة، لا تيأس!';
+                document.getElementById('scoreValue').innerText = score;
+                document.getElementById('totalQuestionsValue').innerText = totalQuestionsCount;
+                document.getElementById('resultMessage').innerHTML = message;
+                document.getElementById('resultPercentage').innerHTML = `النسبة المئوية: ${percentage}%`;
+                document.getElementById('answersReview').innerHTML = reviewHtml;
+                quizArea.classList.add('hidden');
+                resultArea.classList.remove('hidden');
+            }
+            
+            function backToMenu() {
+                menuScreen.classList.remove('hidden');
+                quizScreen.classList.add('hidden');
+                currentQuestions = [];
+                userAnswers = [];
+                currentIndex = 0;
+            }
+            
+            function startQuiz(unit, isComprehensive = false) {
+                isComprehensiveMode = isComprehensive;
+                currentUnitType = unit;
+                menuScreen.classList.add('hidden');
+                quizScreen.classList.remove('hidden');
+                if(isComprehensive){
+                    unitTitleSpan.innerText = '📜 الامتحان الشامل (50 سؤال)';
+                } else {
+                    let titleMap = { political:'🏛️ الأردن في العصور القديمة', economic:'💼 الأردن في العصور الإسلامية', social:'👥 الأردن في العصر الحديث' };
+                    unitTitleSpan.innerText = titleMap[unit] || 'اختبار التاريخ';
+                }
+                loadQuestions(unit, isComprehensive);
+            }
+            
+            // ربط الأزرار
+            document.querySelectorAll('.menu-btn:not(#comprehensiveBtn)').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const unit = btn.getAttribute('data-unit');
+                    if(unit) startQuiz(unit, false);
+                });
+            });
+            if(comprehensiveBtn) comprehensiveBtn.addEventListener('click', () => startQuiz('comprehensive', true));
+            backToMenuBtn.addEventListener('click', backToMenu);
+            returnToMenuBtn.addEventListener('click', backToMenu);
+            prevBtn.addEventListener('click', () => {
+                if(currentIndex > 0) {
+                    currentIndex--;
+                    renderCurrentQuestion();
+                    updateProgressBarAndText();
+                }
+            });
+            
+            // تشغيل الحماية وتهيئة التطبيق
+            verifyFilesAndRun().then(success => {
+                if(success) {
+                    // عرض القاعدة
+                    document.getElementById('mainContent').style.display = 'block';
+                } else {
+                    console.log("تم تفعيل وضع الحماية");
+                }
+            });
         })();
     </script>
 </body>

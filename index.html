@@ -6,7 +6,7 @@
     <title>قسم التاريخ - الأردن | الاختبارات التفاعلية</title>
     <style>
         /* ==================== */
-        /*  styles.css - الدمج الكامل */
+        /*  styles.css - الدمج الكامل مع التصميم */
         /* ==================== */
         
         * {
@@ -26,7 +26,7 @@
 
         /* الحاوية الرئيسية */
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             background: rgba(255, 248, 225, 0.95);
             border-radius: 65px;
@@ -215,7 +215,7 @@
 
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 45px;
         }
@@ -254,6 +254,7 @@
         .nav-buttons {
             display: flex;
             justify-content: center;
+            gap: 15px;
         }
 
         .nav-btn {
@@ -320,7 +321,7 @@
             background: #f4ecd9;
             padding: 20px;
             border-radius: 40px;
-            max-height: 400px;
+            max-height: 450px;
             overflow-y: auto;
         }
 
@@ -336,6 +337,7 @@
             padding: 12px 20px;
             border-radius: 35px;
             border-right: 8px solid;
+            text-align: right;
         }
 
         .review-correct {
@@ -382,10 +384,8 @@
             padding: 60px 80px;
             border-radius: 70px;
             border: 4px solid;
-            border-image: linear-gradient(45deg, #ff0000, #ff6600, #ff0000) 1;
             animation: borderGlow 0.8s ease-in-out infinite;
             box-shadow: 0 0 80px rgba(255, 0, 0, 0.5);
-            transform: scale(1);
         }
         @keyframes borderGlow {
             0%, 100% { border-color: #ff0000; box-shadow: 0 0 60px rgba(255, 0, 0, 0.5); }
@@ -437,7 +437,7 @@
     </div>
 
     <!-- المحتوى الرئيسي للتطبيق -->
-    <div id="mainContent" class="container hidden-content" style="display: none;">
+    <div id="mainContent" class="container" style="display: none;">
         <!-- القائمة الرئيسية -->
         <div id="menuScreen">
             <h1>📜 فصل أول - قسم التاريخ الأردني</h1>
@@ -487,113 +487,123 @@
 
     <script>
         // ======================
-        // سكربت اختبار التاريخ بالكامل (script.js مدمج)
+        // الأسئلة مضمنة مباشرة من JSON الذي أرسلته
         // ======================
-        (function(){
-            // ---------- حماية anti-theft 100% ----------
-            async function verifyFilesAndRun(){
-                const antiDiv = document.getElementById('antiTheftMessage');
-                const mainDiv = document.getElementById('mainContent');
-                let allGood = true;
-                // محاكاة التأكد من وجود ملف الأسئلة (questions.json) - المطلوب وجوده بنفس المستودع
-                try {
-                    const testFetch = await fetch('questions.json', { method: 'HEAD' });
-                    if (!testFetch.ok) allGood = false;
-                } catch(e) { allGood = false; }
-                // بالإضافة إلى فحص style و script محلياً: لكن بما أن الكل داخل نفس الملف نعتبر css/js موحودان
-                // لكن نضيف تحقق إضافي: هل الأنماط الرئيسية معرّفة؟ نمط .container موجود؟
-                const styleExists = !!document.querySelector('style');
-                if(!styleExists) allGood = false;
-                if (!allGood) {
-                    antiDiv.style.display = 'flex';
-                    mainDiv.style.display = 'none';
-                    document.title = '😂 Nice Try! 😂';
-                    document.addEventListener('contextmenu', (e) => { e.preventDefault(); alert('هههههههههههه مفكر تحفظ الموقع؟ 😂'); });
-                    document.addEventListener('keydown', (e) => {
-                        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
-                            e.preventDefault(); alert('لا لا لا... 😂');
-                        }
-                    });
-                    setInterval(() => {
-                        let emojis = ['😂','🤣','💀','😈','هههه'];
-                        let t = document.createElement('div');
-                        t.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-                        t.style.position = 'fixed'; t.style.left = Math.random()*window.innerWidth+'px'; t.style.top = Math.random()*window.innerHeight+'px';
-                        t.style.fontSize = (Math.random()*50+25)+'px'; t.style.opacity = 0.7; t.style.pointerEvents = 'none'; t.style.zIndex = 100000;
-                        document.body.appendChild(t);
-                        setTimeout(()=>t.remove(),1300);
-                    },500);
-                    return false;
-                } else {
-                    antiDiv.style.display = 'none';
-                    mainDiv.classList.remove('hidden-content');
-                    mainDiv.style.display = 'block';
-                    return true;
-                }
-            }
+        const QUESTIONS_DB = {
+            "political": [
+                {"question": "جاء مقطع (جور) من كلمة جوردان (Jordan) بمعنى:", "options": ["الشدة والغلبه", "بانياس", "النهر المتعرج", "المنحدر"], "correct": 1},
+                {"question": "أطلق العرب على الأردن اسماً يعني:", "options": ["الشدة والغلبه", "يوردانيم", "الجمال والوادي", "الأرض الخضراء"], "correct": 0},
+                {"question": "الاسم الذي أطلقه الإغريق على الأردن هو:", "options": ["جوردان", "يوردانيم", "بانياس", "دوجرا"], "correct": 1},
+                {"question": "تنتهي عصور ما قبل التاريخ بحدث مفصلي هو:", "options": ["نشأة الإنسان", "صهر النحاس", "اختراع الكتابة", "بناء المدن"], "correct": 2},
+                {"question": "العام الذي تم فيه اختراع الكتابة تقريباً هو:", "options": ["2500 ق.م", "3500 ق.م", "4500 ق.م", "5500 ق.م"], "correct": 1},
+                {"question": "بلغ عدد المواقع الأثرية 'المسجلة' رسمياً في الأردن نحو:", "options": ["100 ألف موقع", "15 ألف موقع", "50 ألف موقع", "10 آلاف موقع"], "correct": 1},
+                {"question": "يقع موقع (دوجرا) الأثري الذي يعود لـ 2.5 مليون سنة في محافظة:", "options": ["إربد", "الزرقاء", "المفرق", "معان"], "correct": 1},
+                {"question": "الموقع الذي يعد 'أقدم مقبرة منظمة في العالم' هو:", "options": ["عين غزال", "عيون الحمام", "باب الذراع", "تليلات الغسول"], "correct": 1},
+                {"question": "يعود تاريخ موقع (عيون الحمام) في وادي زقلاب بإربد إلى:", "options": ["10 آلاف عام", "16 ألف عام", "20 ألف عام", "5 آلاف عام"], "correct": 1},
+                {"question": "العصر الذي استقر فيه الإنسان في قرى زراعيه وبنى بيوته بشكل هندسي هو:", "options": ["الحجري القديم", "الحجري الحديث", "النحاسي", "البرونزي"], "correct": 1},
+                {"question": "اكتشفت في موقع (عين غزال) بعمان أقدم تماثيل في العالم مصنوعة من:", "options": ["الطين", "الجبس", "الحجر الصوان", "البرونز"], "correct": 1},
+                {"question": "يقع موقع (تل أبو الصوان) الأثري في محافظة:", "options": ["عمان", "جرش", "الكرك", "الطفيلة"], "correct": 1},
+                {"question": "يعد وادي فينان في وادي عربة من أشهر مناجم استخراج:", "options": ["الذهب", "النحاس", "الحديد", "الفوسفات"], "correct": 1},
+                {"question": "العصر الذي ظهرت فيه طبقة من الصناع والحرفيين إلى جانب المزارعين هو:", "options": ["الوسيط", "النحاسي", "الحديدي", "الروماني"], "correct": 1},
+                {"question": "ينتج معدن البرونز من خلط معدني النحاس مع:", "options": ["الحديد", "القصدير", "الذهب", "الفضة"], "correct": 1},
+                {"question": "العصر الذي بنى فيه الإنسان الأسوار والبوابات والتحصينات الضخمة هو:", "options": ["النحاسي", "البرونزي", "الحديدي", "اليوناني"], "correct": 1},
+                {"question": "يقع موقع (باب الذراع) الأثري التابع للعصر البرونزي في:", "options": ["غور الأردن - الكرك", "البادية الشمالية", "وادي عربة", "سهل حوران"], "correct": 0},
+                {"question": "نظام (دويلات المدن) الذي ظهر في العصر البرونزي يعني:", "options": ["تبعية المدن لملك واحد", "كل مدينة دولة لها نظام وجيش خاص", "العيش في مخيمات", "الترحال الدائم"], "correct": 1},
+                {"question": "استخدم الإنسان 'الأختام الأسطوانية' وبنى المعابد في العصر:", "options": ["الحجري الحديث", "الحجري النحاسي", "الحديدي", "البيزنطي"], "correct": 1},
+                {"question": "الفرق الرئيسي بين العصر الحجري النحاسي والبرونزي في السكن هو:", "options": ["ظهور المدن ثم نموها", "اختراع الكتابة", "اكتشاف النار", "تدجين الحيوان"], "correct": 0}
+            ],
+            "economic": [
+                {"question": "وقعت معركة مؤتة الشهيرة على أرض الأردن في السنة الهجرية:", "options": ["السادسة", "الثامنة", "العاشرة", "الرابعة"], "correct": 1},
+                {"question": "يوجد مقام الصحابي الحارث بن عمير الأزدي (أول رسول استشهد) في:", "options": ["المزار - الكرك", "بصيرا - الطفيلة", "الغور الشمالي", "الشونة"], "correct": 1},
+                {"question": "القائد الذي عينه النبي ﷺ أولاً لجيش مؤتة هو:", "options": ["جعفر بن أبي طالب", "زيد بن حارثة", "عبد الله بن رواحة", "خالد بن الوليد"], "correct": 1},
+                {"question": "لقب 'ذو الجناحين' أطلق على الصحابي الشهيد:", "options": ["زيد بن حارثة", "جعفر بن أبي طالب", "عبد الله بن رواحة", "خالد بن الوليد"], "correct": 1},
+                {"question": "استطاع خالد بن الوليد في معركة مؤتة إنقاذ الجيش بوضع خطة:", "options": ["هجومية شاملة", "انسحاب ذكية", "دفاع ثابت", "حصار طويل"], "correct": 1},
+                {"question": "تعد مدينة (الحميمة) في محافظة معان منطلقاً للدعوة:", "options": ["الأموية", "العباسية", "الفاطمية", "الأيوبية"], "correct": 1},
+                {"question": "اتخذ العباسيون من الحميمة مركزاً لدعوتهم 'السرية' بسبب:", "options": ["كثرة مياهها", "موقعها الاستراتيجي وحصانتها", "قربها من دمشق", "وجود قادة الروم فيها"], "correct": 1},
+                {"question": "بنى الأمويون في الأردن العديد من القصور الصحراوية، أشهرها قصر:", "options": ["برقش", "المشتى", "عجلون", "الربض"], "correct": 1},
+                {"question": "في العصر الأموي، كان الأردن يمثل طريقاً مهماً لـ:", "options": ["الجيوش فقط", "قوافل الحج والتجارة", "الهاربين من الحرب", "الرحلات العلمية فقط"], "correct": 1},
+                {"question": "بنيت قلعة عجلون (قلعة الربض) في عهد السلطان صالح الدين على يد:", "options": ["أسامة بن منقذ", "عز الدين أسامة", "بيبرس", "قلاوون"], "correct": 1},
+                {"question": "كان الهدف الأساسي من بناء قلعة عجلون هو:", "options": ["السكن الخاص", "مراقبة الصليبيين وحماية الطرق", "تخزين الطعام", "سجن المعارضين"], "correct": 1},
+                {"question": "في العصر المملوكي، اشتهر غور الأردن بزراعة محصول استراتيجي هو:", "options": ["القمح", "قصب السكر", "الزيتون", "النخيل"], "correct": 1},
+                {"question": "تعد قلعة الكرك من أهم الحصون التي استعادها المسلمون بعد معركة:", "options": ["بدر", "حطين", "عين جالوت", "مؤتة"], "correct": 1},
+                {"question": "اشتهر الأردن في العصر الأموي بوجود مراكز بريد، منها منطقة:", "options": ["القسطل", "إربد", "جرش", "الطفيلة"], "correct": 0},
+                {"question": "الموقع الذي شهد 'أقدم زلزال' مدمر أثر على الكنائس في الأردن هو:", "options": ["البترا", "أم الرصاص", "طبقة فحل", "عمان"], "correct": 1},
+                {"question": "شهدت منطقة (أذرح) في جنوب الأردن حادثة تاريخية هي:", "options": ["التحكيم بين علي ومعاوية", "انطلاق الثورة العربية", "بناء أول مدرسة", "وفاة الملك طلال"], "correct": 0},
+                {"question": "في العصر الأيوبي، كان الأردن يشكل خط الدفاع الأول عن:", "options": ["مصر", "دمشق والقدس", "بغداد", "مكة"], "correct": 1},
+                {"question": "تتميز قلعة الشوبك بموقعها المشرف على طريق:", "options": ["البحر المتوسط", "مصر والشام", "الفرات", "النيل"], "correct": 1},
+                {"question": "انتقلت الخلافة إلى العباسيين بعد معركة (الزاب) التي أدت لضعف الوجود الأموي في:", "options": ["الحجاز", "الأردن والشام", "اليمن", "الأندلس"], "correct": 1},
+                {"question": "تميز الأردن في العصور الإسلامية بكونه 'أرض الرباط' بسبب:", "options": ["كثرة الجبال", "موقعه كخط مواجهة مع الغزاة", "وجود الأنهار", "اعتدال المناخ"], "correct": 1}
+            ],
+            "social": [
+                {"question": "بدأ العهد العثماني في الأردن بعد معركة (مرج دابق) عام:", "options": ["1515م", "1516م", "1517م", "1518م"], "correct": 1},
+                {"question": "قسم العثمانيون الأردن إدارياً إلى عدة سناجق، منها سنجق:", "options": ["عمان", "عجلون", "مأدبا", "المفرق"], "correct": 1},
+                {"question": "من أهم واجبات القوات العثمانية في الأردن كان حماية:", "options": ["الحدود البحرية", "قافلة الحج الشامي", "الغابات", "المناجم"], "correct": 1},
+                {"question": "بدأ العمل في بناء سكة حديد الحجاز في عهد السلطان عبد الحميد الثاني عام:", "options": ["1890م", "1900م", "1910م", "1920م"], "correct": 1},
+                {"question": "كان لسكة حديد الحجاز أثر اقتصادي كبير في الأردن من خلال:", "options": ["زيادة الزراعة", "تنشيط حركة التجارة ونمو المدن", "توليد الكهرباء", "صناعة السفن"], "correct": 1},
+                {"question": "أعلن الشريف الحسين بن علي الثورة العربية الكبرى في عام:", "options": ["1914م", "1916م", "1918م", "1920م"], "correct": 1},
+                {"question": "من أهم أهداف الثورة العربية الكبرى التي آمن بها الأردنيون:", "options": ["الاستعمار", "الاستقلال والوحدة العربية", "زيادة الضرائب", "التحالف مع الروم"], "correct": 1},
+                {"question": "وصل الأمير عبد الله بن الحسين إلى مدينة معان في تاريخ:", "options": ["21 تشرين الثاني 1920م", "11 نيسان 1921م", "25 أيار 1946م", "2 آذار 1956م"], "correct": 0},
+                {"question": "الصحيفة التي أصدرها الأمير عبد الله في معان عام 1920م هي:", "options": ["الشرق العربي", "الحق يعلو", "الرائد", "جزيرة العرب"], "correct": 1},
+                {"question": "كان شعار صحيفة (الحق يعلو) يتبنى مبادئ:", "options": ["الدولة العثمانية", "الثورة العربية الكبرى", "الانتداب البريطاني", "الحزب الشيوعي"], "correct": 1},
+                {"question": "تم تشكيل أول حكومة أردنية في (إمارة الشرق العربي) بتاريخ:", "options": ["1920/11/21", "1921/4/11", "1923/5/25", "1928/2/20"], "correct": 1},
+                {"question": "أول رئيس لأول حكومة أردنية (مجلس المشاورين) هو:", "options": ["إبراهيم هاشم", "رشيد طليع", "هزاع المجالي", "وصفي التل"], "correct": 1},
+                {"question": "أدت معركة (ميسلون) عام 1920م إلى انهيار الحكومة العربية في:", "options": ["بغداد", "دمشق", "عمان", "القدس"], "correct": 1},
+                {"question": "عقد مؤتمر (القاهرة) للبحث في مستقبل الوجود البريطاني عام:", "options": ["1919م", "1921م", "1922م", "1925م"], "correct": 1},
+                {"question": "التقى الأمير عبد الله بوزير المستعمرات البريطاني 'ونستون تشرشل' في مدينة:", "options": ["لندن", "القدس", "عمان", "القاهرة"], "correct": 1},
+                {"question": "اعتمد الأمير عبد الله في تأسيس الدولة على مبدأ سياسي شهير هو:", "options": ["المواجهة الشاملة", "خذ وطالب", "العزلة التامة", "التبعية المطلقة"], "correct": 1},
+                {"question": "كانت مدينة معان تمثل العاصمة الأولى (المؤقتة) لتحركات الأمير بسبب:", "options": ["وجود الأنهار", "ولاء أهلها وموقعها كبوابة للأردن", "قربها من دمشق", "وجود الذهب فيها"], "correct": 1},
+                {"question": "شارك الأردنيون في الثورة العربية الكبرى، وبرز منهم قادة مثل:", "options": ["عودة أبو تايه", "كليبر", "نابليون", "هرقل"], "correct": 0},
+                {"question": "انتقلت العاصمة من معان إلى عمان لأسباب إدارية وسياسية في عام:", "options": ["1920م", "1921م", "1923م", "1946م"], "correct": 1},
+                {"question": "يعتبر يوم 11 نيسان 1921م يوماً وطنياً يرمز إلى:", "options": ["الاستقلال التام", "تأسيس الدولة الأردنية", "تعريب الجيش", "وحدة الضفتين"], "correct": 1}
+            ]
+        };
 
-            // بيانات الأسئلة (لتكون مدمجة احتياطياً لكن السؤال يعتمد على ملف questions.json)
-            // سنقوم بتحميل من questions.json حصراً كما هو مطلوب.
-            // سكربت إدارة الاختبار
-            let currentQuestions = [];     // مصفوفة الأسئلة الحالية
-            let currentIndex = 0;
-            let userAnswers = [];           // الإجابات المخزنة
-            let currentUnitType = '';
-            let totalQuestionsCount = 0;
-            let isComprehensiveMode = false;
-            
-            // عناصر DOM
-            const menuScreen = document.getElementById('menuScreen');
-            const quizScreen = document.getElementById('quizScreen');
-            const loadingArea = document.getElementById('loadingArea');
-            const quizArea = document.getElementById('quizArea');
-            const resultArea = document.getElementById('resultArea');
-            const unitTitleSpan = document.getElementById('unitTitle');
-            const progressTextSpan = document.getElementById('progressText');
-            const progressFillDiv = document.getElementById('progressFill');
-            const questionTextDiv = document.getElementById('questionText');
-            const optionsContainer = document.getElementById('optionsContainer');
-            const prevBtn = document.getElementById('prevBtn');
-            const backToMenuBtn = document.getElementById('backToMenuBtn');
-            const returnToMenuBtn = document.getElementById('returnToMenuBtn');
-            const comprehensiveBtn = document.getElementById('comprehensiveBtn');
-            
-            // تحميل الأسئلة من الملف الخارجي (questions.json)
-            async function loadQuestions(unit, isComprehensive = false) {
-                loadingArea.classList.remove('hidden');
-                quizArea.classList.add('hidden');
-                resultArea.classList.add('hidden');
+        // سكربت إدارة الاختبار
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let userAnswers = [];
+        let currentUnitType = '';
+        let totalQuestionsCount = 0;
+        
+        // عناصر DOM
+        const menuScreen = document.getElementById('menuScreen');
+        const quizScreen = document.getElementById('quizScreen');
+        const loadingArea = document.getElementById('loadingArea');
+        const quizArea = document.getElementById('quizArea');
+        const resultArea = document.getElementById('resultArea');
+        const unitTitleSpan = document.getElementById('unitTitle');
+        const progressTextSpan = document.getElementById('progressText');
+        const progressFillDiv = document.getElementById('progressFill');
+        const questionTextDiv = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const backToMenuBtn = document.getElementById('backToMenuBtn');
+        const returnToMenuBtn = document.getElementById('returnToMenuBtn');
+        const comprehensiveBtn = document.getElementById('comprehensiveBtn');
+        
+        function loadQuestions(unit, isComprehensive = false) {
+            loadingArea.classList.remove('hidden');
+            quizArea.classList.add('hidden');
+            resultArea.classList.add('hidden');
+            setTimeout(() => {
                 try {
-                    const response = await fetch('questions.json');
-                    if (!response.ok) throw new Error('فشل تحميل ملف الأسئلة');
-                    const allData = await response.json();
-                    // نتوقع أن يكون الملف يحتوي على مصفوفات حسب المفاتيح: political, economic, social
                     let selected = [];
                     if (isComprehensive) {
-                        // جمع كل الأسئلة من الأقسام الثلاثة واختيار 50 عشوائياً (أو كل الأسئلة إن قلت)
                         let combined = [];
-                        if(allData.political) combined.push(...allData.political);
-                        if(allData.economic) combined.push(...allData.economic);
-                        if(allData.social) combined.push(...allData.social);
-                        if(combined.length > 50) {
-                            // خلط عشوائي
-                            for(let i=combined.length-1;i>0;i--){
-                                const j=Math.floor(Math.random()*(i+1));
-                                [combined[i],combined[j]]=[combined[j],combined[i]];
-                            }
-                            selected = combined.slice(0,50);
-                        } else {
-                            selected = combined;
+                        if(QUESTIONS_DB.political) combined.push(...QUESTIONS_DB.political);
+                        if(QUESTIONS_DB.economic) combined.push(...QUESTIONS_DB.economic);
+                        if(QUESTIONS_DB.social) combined.push(...QUESTIONS_DB.social);
+                        // خلط عشوائي واختيار 50
+                        for(let i=combined.length-1;i>0;i--){
+                            const j=Math.floor(Math.random()*(i+1));
+                            [combined[i],combined[j]]=[combined[j],combined[i]];
                         }
+                        selected = combined.slice(0,50);
                     } else {
-                        if(allData[unit] && Array.isArray(allData[unit])) {
-                            selected = [...allData[unit]];
-                            if(selected.length > 20) selected = selected.slice(0,20);
-                        } else {
-                            selected = [];
-                        }
+                        if(QUESTIONS_DB[unit]) selected = [...QUESTIONS_DB[unit]];
+                        else selected = [];
                     }
-                    if(!selected.length) throw new Error('لا توجد أسئلة متاحة لهذه الوحدة');
+                    if(!selected.length) throw new Error('لا توجد أسئلة');
                     currentQuestions = selected;
                     totalQuestionsCount = currentQuestions.length;
                     userAnswers = new Array(totalQuestionsCount).fill(null);
@@ -604,165 +614,153 @@
                     updateProgressBarAndText();
                 } catch(err) {
                     loadingArea.classList.add('hidden');
-                    alert('حدث خطأ في تحميل الأسئلة: '+err.message);
-                    backToMenu();
+                    alert('خطأ في تحميل الأسئلة');
                 }
-            }
-            
-            function renderCurrentQuestion() {
-                if(!currentQuestions.length || currentIndex >= currentQuestions.length) return;
-                const q = currentQuestions[currentIndex];
-                questionTextDiv.innerHTML = q.question || 'سؤال بدون نص';
-                // إنشاء خيارات
-                optionsContainer.innerHTML = '';
-                const letters = ['أ', 'ب', 'ج', 'د'];
-                q.options.forEach((opt, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    if(userAnswers[currentIndex] === idx) btn.classList.add('selected');
-                    btn.innerHTML = `${letters[idx]}. ${opt}`;
-                    btn.addEventListener('click', () => {
-                        if(userAnswers[currentIndex] !== idx) {
-                            userAnswers[currentIndex] = idx;
-                            highlightSelectedOption();
+            }, 100);
+        }
+        
+        function renderCurrentQuestion() {
+            if(!currentQuestions.length) return;
+            const q = currentQuestions[currentIndex];
+            questionTextDiv.innerHTML = q.question;
+            optionsContainer.innerHTML = '';
+            const letters = ['أ', 'ب', 'ج', 'د'];
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                if(userAnswers[currentIndex] === idx) btn.classList.add('selected');
+                btn.innerHTML = `${letters[idx]}. ${opt}`;
+                btn.addEventListener('click', () => {
+                    if(userAnswers[currentIndex] !== idx) {
+                        userAnswers[currentIndex] = idx;
+                        highlightSelectedOption();
+                    }
+                });
+                optionsContainer.appendChild(btn);
+            });
+            prevBtn.style.display = currentIndex === 0 ? 'none' : 'inline-block';
+            if(currentIndex === totalQuestionsCount-1) {
+                if(!document.getElementById('nextFinishBtn')) {
+                    const finishBtn = document.createElement('button');
+                    finishBtn.id = 'nextFinishBtn';
+                    finishBtn.className = 'nav-btn';
+                    finishBtn.textContent = 'إنهاء الاختبار 🎯';
+                    finishBtn.addEventListener('click', showResults);
+                    prevBtn.parentNode.appendChild(finishBtn);
+                }
+                const nextNormal = document.getElementById('nextNormalBtn');
+                if(nextNormal) nextNormal.remove();
+            } else {
+                const existingFinish = document.getElementById('nextFinishBtn');
+                if(existingFinish) existingFinish.remove();
+                if(!document.getElementById('nextNormalBtn')) {
+                    const nextBtn = document.createElement('button');
+                    nextBtn.id = 'nextNormalBtn';
+                    nextBtn.className = 'nav-btn';
+                    nextBtn.textContent = 'التالي ➡';
+                    nextBtn.addEventListener('click', () => {
+                        if(currentIndex < totalQuestionsCount-1) {
+                            currentIndex++;
+                            renderCurrentQuestion();
+                            updateProgressBarAndText();
                         }
                     });
-                    optionsContainer.appendChild(btn);
-                });
-                // زر السابق يظهر او يختفي
-                prevBtn.style.display = currentIndex === 0 ? 'none' : 'inline-block';
-                if(currentIndex === totalQuestionsCount-1) {
-                    prevBtn.nextElementSibling ? prevBtn.nextElementSibling.remove() : null;
-                    if(!document.getElementById('nextFinishBtn')) {
-                        const finishBtn = document.createElement('button');
-                        finishBtn.id = 'nextFinishBtn';
-                        finishBtn.className = 'nav-btn';
-                        finishBtn.textContent = 'إنهاء الاختبار 🎯';
-                        finishBtn.style.marginRight = '15px';
-                        finishBtn.addEventListener('click', showResults);
-                        prevBtn.parentNode.appendChild(finishBtn);
-                    }
-                } else {
-                    const existingFinish = document.getElementById('nextFinishBtn');
-                    if(existingFinish) existingFinish.remove();
-                    if(!document.getElementById('nextNormalBtn')) {
-                        const nextBtn = document.createElement('button');
-                        nextBtn.id = 'nextNormalBtn';
-                        nextBtn.className = 'nav-btn';
-                        nextBtn.textContent = 'التالي ➡';
-                        nextBtn.style.marginRight = '15px';
-                        nextBtn.addEventListener('click', () => {
-                            if(currentIndex < totalQuestionsCount-1) {
-                                currentIndex++;
-                                renderCurrentQuestion();
-                                updateProgressBarAndText();
-                            }
-                        });
-                        prevBtn.parentNode.appendChild(nextBtn);
-                    }
+                    prevBtn.parentNode.appendChild(nextBtn);
                 }
+            }
+            updateProgressBarAndText();
+        }
+        
+        function highlightSelectedOption() {
+            const btns = document.querySelectorAll('.option-btn');
+            btns.forEach((btn, idx) => {
+                if(userAnswers[currentIndex] === idx) btn.classList.add('selected');
+                else btn.classList.remove('selected');
+            });
+        }
+        
+        function updateProgressBarAndText() {
+            if(totalQuestionsCount){
+                progressTextSpan.innerText = `سؤال ${currentIndex+1} / ${totalQuestionsCount}`;
+                let percent = ((currentIndex) / totalQuestionsCount) * 100;
+                progressFillDiv.style.width = percent + '%';
+            }
+        }
+        
+        function showResults() {
+            let score = 0;
+            let reviewHtml = '';
+            for(let i=0;i<totalQuestionsCount;i++){
+                const userAns = userAnswers[i];
+                const correctAns = currentQuestions[i].correct;
+                const isCorrect = (userAns === correctAns);
+                if(isCorrect) score++;
+                const qText = currentQuestions[i].question;
+                const userOption = userAns !== null ? (currentQuestions[i].options[userAns] || 'لم يختر') : 'لم يجب';
+                const correctOption = currentQuestions[i].options[correctAns];
+                const statusClass = isCorrect ? 'review-correct' : 'review-wrong';
+                reviewHtml += `<div class="review-item ${statusClass}">
+                                <strong>❓ السؤال:</strong> ${qText}<br>
+                                <span>📌 إجابتك: ${userOption}</span><br>
+                                <span>✅ الإجابة الصحيحة: ${correctOption}</span>
+                                </div>`;
+            }
+            const percentage = ((score / totalQuestionsCount)*100).toFixed(1);
+            let message = '';
+            if(percentage >= 85) message = '🏆 ممتاز! مستوى عالٍ في التاريخ الأردني 🏆';
+            else if(percentage >= 65) message = '📘 جيد جداً، يمكنك المراجعة لتحقيق الأفضل';
+            else if(percentage >= 50) message = '📖 جيد، حاول مراجعة المحتوى مرة أخرى';
+            else message = '📚 تحتاج إلى مراجعة شاملة، لا تيأس!';
+            document.getElementById('scoreValue').innerText = score;
+            document.getElementById('totalQuestionsValue').innerText = totalQuestionsCount;
+            document.getElementById('resultMessage').innerHTML = message;
+            document.getElementById('resultPercentage').innerHTML = `النسبة المئوية: ${percentage}%`;
+            document.getElementById('answersReview').innerHTML = reviewHtml;
+            quizArea.classList.add('hidden');
+            resultArea.classList.remove('hidden');
+        }
+        
+        function backToMenu() {
+            menuScreen.classList.remove('hidden');
+            quizScreen.classList.add('hidden');
+            currentQuestions = [];
+        }
+        
+        function startQuiz(unit, isComprehensive = false) {
+            menuScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            if(isComprehensive){
+                unitTitleSpan.innerText = '📜 الامتحان الشامل (50 سؤال)';
+            } else {
+                let titleMap = { political:'🏛️ الأردن في العصور القديمة', economic:'💼 الأردن في العصور الإسلامية', social:'👥 الأردن في العصر الحديث' };
+                unitTitleSpan.innerText = titleMap[unit] || 'اختبار التاريخ';
+            }
+            loadQuestions(unit, isComprehensive);
+        }
+        
+        // ربط الأزرار
+        document.querySelectorAll('.menu-btn:not(#comprehensiveBtn)').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const unit = btn.getAttribute('data-unit');
+                if(unit) startQuiz(unit, false);
+            });
+        });
+        if(comprehensiveBtn) comprehensiveBtn.addEventListener('click', () => startQuiz('comprehensive', true));
+        backToMenuBtn.addEventListener('click', backToMenu);
+        returnToMenuBtn.addEventListener('click', backToMenu);
+        prevBtn.addEventListener('click', () => {
+            if(currentIndex > 0) {
+                currentIndex--;
+                renderCurrentQuestion();
                 updateProgressBarAndText();
             }
-            
-            function highlightSelectedOption() {
-                const btns = document.querySelectorAll('.option-btn');
-                btns.forEach((btn, idx) => {
-                    if(userAnswers[currentIndex] === idx) btn.classList.add('selected');
-                    else btn.classList.remove('selected');
-                });
-            }
-            
-            function updateProgressBarAndText() {
-                if(totalQuestionsCount){
-                    progressTextSpan.innerText = `سؤال ${currentIndex+1} / ${totalQuestionsCount}`;
-                    let percent = ((currentIndex) / totalQuestionsCount) * 100;
-                    progressFillDiv.style.width = percent + '%';
-                }
-            }
-            
-            function showResults() {
-                let score = 0;
-                let reviewHtml = '';
-                for(let i=0;i<totalQuestionsCount;i++){
-                    const userAns = userAnswers[i];
-                    const correctAns = currentQuestions[i].correct;
-                    const isCorrect = (userAns === correctAns);
-                    if(isCorrect) score++;
-                    const qText = currentQuestions[i].question;
-                    const userOption = userAns !== null ? (currentQuestions[i].options[userAns] || 'لم يختر') : 'لم يجب';
-                    const correctOption = currentQuestions[i].options[correctAns];
-                    const statusClass = isCorrect ? 'review-correct' : 'review-wrong';
-                    reviewHtml += `<div class="review-item ${statusClass}">
-                                    <strong>❓ السؤال:</strong> ${qText}<br>
-                                    <span>✅ إجابتك: ${userOption}</span><br>
-                                    <span>✔️ الإجابة الصحيحة: ${correctOption}</span>
-                                    </div>`;
-                }
-                const percentage = ((score / totalQuestionsCount)*100).toFixed(1);
-                let message = '';
-                if(percentage >= 85) message = '🏆 ممتاز! مستوى عالٍ في التاريخ الأردني 🏆';
-                else if(percentage >= 65) message = '📘 جيد جداً، يمكنك المراجعة لتحقيق الأفضل';
-                else if(percentage >= 50) message = '📖 جيد، حاول مراجعة المحتوى مرة أخرى';
-                else message = '📚 تحتاج إلى مراجعة شاملة، لا تيأس!';
-                document.getElementById('scoreValue').innerText = score;
-                document.getElementById('totalQuestionsValue').innerText = totalQuestionsCount;
-                document.getElementById('resultMessage').innerHTML = message;
-                document.getElementById('resultPercentage').innerHTML = `النسبة المئوية: ${percentage}%`;
-                document.getElementById('answersReview').innerHTML = reviewHtml;
-                quizArea.classList.add('hidden');
-                resultArea.classList.remove('hidden');
-            }
-            
-            function backToMenu() {
-                menuScreen.classList.remove('hidden');
-                quizScreen.classList.add('hidden');
-                currentQuestions = [];
-                userAnswers = [];
-                currentIndex = 0;
-            }
-            
-            function startQuiz(unit, isComprehensive = false) {
-                isComprehensiveMode = isComprehensive;
-                currentUnitType = unit;
-                menuScreen.classList.add('hidden');
-                quizScreen.classList.remove('hidden');
-                if(isComprehensive){
-                    unitTitleSpan.innerText = '📜 الامتحان الشامل (50 سؤال)';
-                } else {
-                    let titleMap = { political:'🏛️ الأردن في العصور القديمة', economic:'💼 الأردن في العصور الإسلامية', social:'👥 الأردن في العصر الحديث' };
-                    unitTitleSpan.innerText = titleMap[unit] || 'اختبار التاريخ';
-                }
-                loadQuestions(unit, isComprehensive);
-            }
-            
-            // ربط الأزرار
-            document.querySelectorAll('.menu-btn:not(#comprehensiveBtn)').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const unit = btn.getAttribute('data-unit');
-                    if(unit) startQuiz(unit, false);
-                });
-            });
-            if(comprehensiveBtn) comprehensiveBtn.addEventListener('click', () => startQuiz('comprehensive', true));
-            backToMenuBtn.addEventListener('click', backToMenu);
-            returnToMenuBtn.addEventListener('click', backToMenu);
-            prevBtn.addEventListener('click', () => {
-                if(currentIndex > 0) {
-                    currentIndex--;
-                    renderCurrentQuestion();
-                    updateProgressBarAndText();
-                }
-            });
-            
-            // تشغيل الحماية وتهيئة التطبيق
-            verifyFilesAndRun().then(success => {
-                if(success) {
-                    // عرض القاعدة
-                    document.getElementById('mainContent').style.display = 'block';
-                } else {
-                    console.log("تم تفعيل وضع الحماية");
-                }
-            });
-        })();
+        });
+        
+        // إظهار المحتوى بعد التأكد (الحماية خفيفة)
+        setTimeout(() => {
+            document.getElementById('antiTheftMessage').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }, 200);
     </script>
 </body>
 </html>

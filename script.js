@@ -113,8 +113,7 @@ window.ExamApp = {
             ...this.allQuestions.political,
             ...this.allQuestions.economic,
             ...this.allQuestions.social,
-            ...this.allQuestions.education,
-            ...this.allQuestions.palestine
+
         ];
         this.currentQuestions = this.shuffleArray([...all]).slice(0, 50);
         this.startQuiz();
